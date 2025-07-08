@@ -323,13 +323,13 @@ test_security() {
         if [ -d "$dir" ] && [ -f "$dir/package.json" ]; then
             log_info "Running security audit for $dir..."
             cd "$dir"
-            if npm audit --audit-level moderate; then
+        if npm audit --audit-level moderate; then
                 log_success "Security audit passed for $dir"
-            else
+        else
                 log_warning "Security audit found issues in $dir"
-            fi
-            cd ..
         fi
+        cd ..
+    fi
     done
 }
 
@@ -377,16 +377,16 @@ test_integration() {
 generate_report() {
     log_info "Generating test report..."
     
-    echo ""
+        echo ""
     echo "=========================================="
     echo "           EPICENTER TEST REPORT"
     echo "=========================================="
-    echo ""
+        echo ""
     echo "Total Tests: $TOTAL_TESTS"
     echo "Passed: $PASSED_TESTS"
     echo "Failed: $FAILED_TESTS"
     echo "Skipped: $SKIPPED_TESTS"
-    echo ""
+        echo ""
     
     if [ $FAILED_TESTS -eq 0 ]; then
         log_success "All tests passed! 🎉"

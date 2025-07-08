@@ -139,8 +139,8 @@ const CollectionsPage = () => {
           </div>
         ))}
       </div>
-    </div>
-  );
+  </div>
+);
 };
 
 const CreatePage = () => {
@@ -315,8 +315,8 @@ const CreatePage = () => {
           </button>
         </div>
       </div>
-    </div>
-  );
+  </div>
+);
 };
 
 const AuctionsPage = () => {
@@ -516,8 +516,8 @@ const AuctionsPage = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+  </div>
+);
 };
 
 const ProfilePage = () => {
@@ -824,8 +824,8 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+  </div>
+);
 };
 
 function App() {
@@ -833,19 +833,19 @@ function App() {
     <ApolloProvider client={apolloClient}>
       <MockWalletProvider>
         <ThemeProvider>
-          <Router>
-            <Layout>
-              <Routes>
+        <Router>
+          <Layout>
+            <Routes>
                 <Route path="/" element={<SplashPage />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/collections" element={<CollectionsPage />} />
-                <Route path="/create" element={<CreatePage />} />
-                <Route path="/auctions" element={<AuctionsPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/collections" element={<CollectionsPage />} />
+              <Route path="/create" element={<CreatePage />} />
+              <Route path="/auctions" element={<AuctionsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/pro" element={<ProDashboard />} />
-              </Routes>
-            </Layout>
-          </Router>
+            </Routes>
+          </Layout>
+        </Router>
         </ThemeProvider>
       </MockWalletProvider>
     </ApolloProvider>
