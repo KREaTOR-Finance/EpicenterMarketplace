@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { MockWalletConnect } from './MockWalletProvider';
 import { useTheme } from '../contexts/ThemeContext';
+import { getAssetPath } from '../utils/assets';
 import { 
   HomeIcon, 
   CollectionIcon, 
@@ -41,7 +42,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/assets/Seismic LOGO 2 48x48 px.png" 
+                src={getAssetPath('Seismic LOGO 2 48x48 px.png')}
                 alt="SeismicWallet Logo" 
                 className="w-8 h-8"
               />
@@ -88,7 +89,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Mobile Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/assets/Seismic LOGO 2 48x48 px.png" 
+                src={getAssetPath('Seismic LOGO 2 48x48 px.png')}
                 alt="SeismicWallet Logo" 
                 className="w-6 h-6"
               />
@@ -131,7 +132,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <img 
-                  src="/assets/Seismic LOGO 2 48x48 px.png" 
+                  src={getAssetPath('Seismic LOGO 2 48x48 px.png')}
                   alt="SeismicWallet Logo" 
                   className="w-8 h-8"
                 />

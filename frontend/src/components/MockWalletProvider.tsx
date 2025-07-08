@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { getAssetPath } from '../utils/assets';
 
 interface MockWalletState {
   isConnected: boolean;
@@ -117,7 +118,7 @@ export const MockWalletConnect: React.FC = () => {
       }`}
     >
       <img 
-        src="/assets/Seismic LOGO 2 32x32 px.png" 
+        src={getAssetPath('Seismic LOGO 2 32x32 px.png')}
         alt="SeismicWallet" 
         className="w-5 h-5"
       />

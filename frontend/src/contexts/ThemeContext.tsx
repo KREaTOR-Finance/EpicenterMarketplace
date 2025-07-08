@@ -25,9 +25,9 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Get theme from localStorage or default to light
+    // Get theme from localStorage or default to dark
     const savedTheme = localStorage.getItem('epicenter-theme') as Theme;
-    return savedTheme || 'light';
+    return savedTheme || 'dark';
   });
 
   const toggleTheme = () => {

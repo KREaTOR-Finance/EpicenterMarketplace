@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { MockWalletConnect } from '../components/MockWalletProvider';
+import { getAssetPath } from '../utils/assets';
 
 export const SplashPage: React.FC = () => {
   const { isDark } = useTheme();
@@ -15,7 +16,7 @@ export const SplashPage: React.FC = () => {
             {/* Logo */}
             <div className="flex justify-center mb-8">
               <img 
-                src="/assets/Seismic LOGO 2 128x128 px.png" 
+                src={getAssetPath('Seismic LOGO 2 128x128 px.png')}
                 alt="SeismicWallet Logo" 
                 className="w-24 h-24"
               />
