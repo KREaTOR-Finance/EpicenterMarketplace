@@ -7,7 +7,6 @@ import {
   CollectionIcon, 
   PlusIcon, 
   UserIcon, 
-  CogIcon,
   FireIcon,
   CurrencyDollarIcon
 } from '@heroicons/react/outline';

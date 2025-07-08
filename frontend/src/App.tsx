@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from './lib/apollo';
@@ -9,6 +8,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { useTheme } from './contexts/ThemeContext';
 import { HomePage } from './pages/HomePage';
 import { ProDashboard } from './pages/ProDashboard';
+import './index.css';
 
 // Placeholder components for other pages
 const CollectionsPage = () => {

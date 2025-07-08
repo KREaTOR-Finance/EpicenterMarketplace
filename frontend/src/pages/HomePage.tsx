@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useWallet } from '../components/WalletProvider';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
   FireIcon, 
-  CurrencyDollarIcon, 
   ShieldCheckIcon,
   LightningBoltIcon,
-  CollectionIcon,
-  PlusIcon
+  CheckCircleIcon,
+  StarIcon,
+  TrendingUpIcon,
+  UserGroupIcon,
+  ChartBarIcon,
+  ClockIcon,
 } from '@heroicons/react/outline';
 
 export const HomePage: React.FC = () => {
-  const { activeWallet, seismicWallet, metaMask } = useWallet();
   const { isDark } = useTheme();
 
   const features = [
@@ -35,7 +36,7 @@ export const HomePage: React.FC = () => {
       primary: true
     },
     {
-      icon: CollectionIcon,
+      icon: CheckCircleIcon,
       title: 'Cross-Chain Support',
       description: 'Optional Solana integration for expanded NFT access.',
       primary: false
@@ -151,51 +152,20 @@ export const HomePage: React.FC = () => {
             The premier NFT marketplace for the SEI ecosystem
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {!activeWallet ? (
-              <>
-                <button className={`px-8 py-4 font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2 ${
-                  isDark 
-                    ? 'bg-white text-[#e11d2a] hover:bg-gray-100' 
-                    : 'bg-white text-[#e11d2a] hover:bg-red-50'
-                }`}>
-                  <span>Connect SeismicWallet</span>
-                  <span className={`text-xs px-2 py-1 rounded ${
-                    isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-800'
-                  }`}>Primary</span>
-                </button>
-                <button className={`px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg transition-colors ${
-                  isDark 
-                    ? 'hover:bg-white hover:text-[#e11d2a]' 
-                    : 'hover:bg-white hover:text-[#e11d2a]'
-                }`}>
-                  Connect MetaMask
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/collections"
-                className={`px-8 py-4 font-semibold rounded-lg transition-colors ${
-                  isDark 
-                    ? 'bg-white text-[#e11d2a] hover:bg-gray-100' 
-                    : 'bg-white text-[#e11d2a] hover:bg-red-50'
-                }`}
-              >
-                Start Trading
-              </Link>
-            )}
+            <Link
+              to="/collections"
+              className={`px-8 py-4 font-semibold rounded-lg transition-colors ${
+                isDark 
+                  ? 'bg-white text-[#e11d2a] hover:bg-gray-100' 
+                  : 'bg-white text-[#e11d2a] hover:bg-red-50'
+              }`}
+            >
+              Start Trading
+            </Link>
           </div>
           
           {/* Wallet Status */}
-          {activeWallet && (
-            <div className="mt-8 p-4 bg-white/10 rounded-lg">
-              <p className="text-sm">
-                Connected with {activeWallet === 'seismic' ? 'SeismicWallet' : 'MetaMask'}
-              </p>
-              <p className={`text-xs ${isDark ? 'text-gray-200' : 'text-red-200'}`}>
-                {activeWallet === 'seismic' ? seismicWallet.address : metaMask.address}
-              </p>
-            </div>
-          )}
+          {/* Removed wallet status section */}
         </div>
       </section>
 
@@ -431,7 +401,7 @@ export const HomePage: React.FC = () => {
               boxShadow: '0 2px 16px 0 #e11d2a22, 0 2px 12px 0 #0005'
             } : {}}
           >
-            <CollectionIcon className={`w-8 h-8 mb-4 ${isDark ? 'text-[#e11d2a]' : 'text-[#e11d2a]'}`} />
+            <CheckCircleIcon className={`w-8 h-8 mb-4 ${isDark ? 'text-[#e11d2a]' : 'text-[#e11d2a]'}`} />
             <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               Browse Collections
             </h3>
@@ -451,7 +421,7 @@ export const HomePage: React.FC = () => {
               boxShadow: '0 2px 16px 0 #e11d2a22, 0 2px 12px 0 #0005'
             } : {}}
           >
-            <PlusIcon className={`w-8 h-8 mb-4 ${isDark ? 'text-[#e11d2a]' : 'text-[#e11d2a]'}`} />
+            <CheckCircleIcon className={`w-8 h-8 mb-4 ${isDark ? 'text-[#e11d2a]' : 'text-[#e11d2a]'}`} />
             <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               Create NFT
             </h3>

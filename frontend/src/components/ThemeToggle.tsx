@@ -1,31 +1,22 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { SunIcon, MoonIcon } from '@heroicons/react/outline';
 
 export const ThemeToggle: React.FC = () => {
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-col">
-        <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Dark Mode</span>
-        <span className={`text-xs ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>Switch to {isDark ? 'light' : 'dark'} theme</span>
-      </div>
-      
-      <button
-        onClick={toggleTheme}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          isDark ? 'bg-[#e11d2a]' : 'bg-gray-200'
-        }`}
-        role="switch"
-        aria-checked={isDark}
-      >
-        <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-            isDark ? 'translate-x-6' : 'translate-x-1'
-          }`}
-        />
-      </button>
-    </div>
+    <button
+      onClick={toggleTheme}
+      className="p-2 rounded-lg transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
+      aria-label="Toggle theme"
+    >
+      {isDark ? (
+        <SunIcon className="w-5 h-5 text-yellow-500" />
+      ) : (
+        <MoonIcon className="w-5 h-5 text-gray-600" />
+      )}
+    </button>
   );
 };
 

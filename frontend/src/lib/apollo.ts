@@ -1,15 +1,12 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_API_URL || 'http://localhost:4000/graphql',
+  uri: process.env.VITE_API_URL || 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
-  // Get the authentication token from local storage if it exists
-  const token = localStorage.getItem('authToken');
-  
-  // Return the headers to the context so httpLink can read them
+  const token = localStorage.getItem('auth-token');
   return {
     headers: {
       ...headers,
@@ -19,23 +16,23 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const apolloClient = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([authLink, httpLink]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
         fields: {
+          nfts: {
+            merge(_existing = [], incoming) {
+              return incoming;
+            },
+          },
           collections: {
-            merge(existing = [], incoming) {
+            merge(_existing = [], incoming) {
               return incoming;
             },
           },
-          listings: {
-            merge(existing = [], incoming) {
-              return incoming;
-            },
-          },
-          bids: {
-            merge(existing = [], incoming) {
+          auctions: {
+            merge(_existing = [], incoming) {
               return incoming;
             },
           },
@@ -45,7 +42,7 @@ export const apolloClient = new ApolloClient({
   }),
   defaultOptions: {
     watchQuery: {
-      errorPolicy: 'all',
+      errorPolicy: 'ignore',
     },
     query: {
       errorPolicy: 'all',
