@@ -1,0 +1,473 @@
+{
+  "name": "Seismic Epicenter NFT Marketplace Design System",
+  "version": "1.0.0",
+  "description": "Complete design system for the Seismic Epicenter NFT marketplace built for the SEI ecosystem",
+  "brand": {
+    "name": "Seismic Epicenter",
+    "tagline": "The premier cross-chain NFT marketplace built for the SEI ecosystem",
+    "logo": {
+      "primary": "/assets/Seismic LOGO 2 128x128 px.png",
+      "sizes": {
+        "16x16": "/assets/Seismic LOGO 2 16x16 px.png",
+        "32x32": "/assets/Seismic LOGO 2 32x32 px.png",
+        "48x48": "/assets/Seismic LOGO 2 48x48 px.png",
+        "128x128": "/assets/Seismic LOGO 2 128x128 px.png"
+      }
+    }
+  },
+  "colors": {
+    "primary": {
+      "seismic-red": "#e11d2a",
+      "seismic-red-hover": "#c41625",
+      "seismic-red-dark": "#c11825",
+      "seismic-red-light": "#ff4444"
+    },
+    "gradients": {
+      "primary-gradient": "linear-gradient(90deg, #e11d2a 0%, #ff4444 100%)",
+      "hero-gradient-dark": "linear-gradient(90deg, #e11d2a 0%, #111 100%)",
+      "hero-gradient-light": "linear-gradient(90deg, #e11d2a 0%, #ff6b6b 100%)",
+      "card-shadow-dark": "0 2px 16px 0 #e11d2a44, 0 2px 12px 0 #000a",
+      "card-shadow-light": "0 2px 16px 0 #e11d2a33, 0 2px 12px 0 #e11d2a22"
+    },
+    "dark-theme": {
+      "background": "#0a0a0a",
+      "surface": "#111111",
+      "surface-secondary": "#181818",
+      "surface-tertiary": "#222222",
+      "surface-quaternary": "#333333",
+      "text-primary": "#ffffff",
+      "text-secondary": "#e5e5e5",
+      "text-tertiary": "#cccccc",
+      "text-quaternary": "#999999",
+      "border": "#333333",
+      "border-hover": "#444444"
+    },
+    "light-theme": {
+      "background": "#f9fafb",
+      "surface": "#ffffff",
+      "surface-secondary": "#f3f4f6",
+      "surface-tertiary": "#e5e7eb",
+      "text-primary": "#111827",
+      "text-secondary": "#374151",
+      "text-tertiary": "#6b7280",
+      "text-quaternary": "#9ca3af",
+      "border": "#d1d5db",
+      "border-hover": "#9ca3af"
+    },
+    "semantic": {
+      "success": "#10b981",
+      "warning": "#f59e0b",
+      "error": "#ef4444",
+      "info": "#3b82f6"
+    },
+    "network": {
+      "sei": "#e11d2a",
+      "ethereum": "#627eea",
+      "solana": "#9945ff"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "primary": "Inter, system-ui, -apple-system, sans-serif",
+      "mono": "JetBrains Mono, Consolas, monospace"
+    },
+    "scales": {
+      "hero": {
+        "fontSize": "4rem",
+        "lineHeight": "1.1",
+        "fontWeight": "700",
+        "letterSpacing": "-0.025em"
+      },
+      "h1": {
+        "fontSize": "3rem",
+        "lineHeight": "1.2",
+        "fontWeight": "700",
+        "letterSpacing": "-0.025em"
+      },
+      "h2": {
+        "fontSize": "2.25rem",
+        "lineHeight": "1.3",
+        "fontWeight": "600",
+        "letterSpacing": "-0.025em"
+      },
+      "h3": {
+        "fontSize": "1.875rem",
+        "lineHeight": "1.4",
+        "fontWeight": "600"
+      },
+      "h4": {
+        "fontSize": "1.5rem",
+        "lineHeight": "1.4",
+        "fontWeight": "600"
+      },
+      "body-large": {
+        "fontSize": "1.125rem",
+        "lineHeight": "1.6",
+        "fontWeight": "400"
+      },
+      "body": {
+        "fontSize": "1rem",
+        "lineHeight": "1.6",
+        "fontWeight": "400"
+      },
+      "body-small": {
+        "fontSize": "0.875rem",
+        "lineHeight": "1.5",
+        "fontWeight": "400"
+      },
+      "caption": {
+        "fontSize": "0.75rem",
+        "lineHeight": "1.4",
+        "fontWeight": "400"
+      }
+    }
+  },
+  "spacing": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem",
+    "2xl": "3rem",
+    "3xl": "4rem",
+    "4xl": "6rem",
+    "5xl": "8rem"
+  },
+  "borderRadius": {
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "0.75rem",
+    "xl": "1rem",
+    "2xl": "1.5rem",
+    "full": "9999px"
+  },
+  "components": {
+    "buttons": {
+      "primary": {
+        "background": "#e11d2a",
+        "color": "#ffffff",
+        "padding": "0.75rem 1.5rem",
+        "borderRadius": "0.5rem",
+        "fontSize": "1rem",
+        "fontWeight": "600",
+        "hover": {
+          "background": "#c41625",
+          "transform": "translateY(-1px)",
+          "boxShadow": "0 4px 12px rgba(225, 29, 42, 0.4)"
+        }
+      },
+      "secondary": {
+        "background": "transparent",
+        "color": "#e11d2a",
+        "border": "2px solid #e11d2a",
+        "padding": "0.75rem 1.5rem",
+        "borderRadius": "0.5rem",
+        "fontSize": "1rem",
+        "fontWeight": "600",
+        "hover": {
+          "background": "#e11d2a",
+          "color": "#ffffff"
+        }
+      },
+      "ghost": {
+        "background": "transparent",
+        "color": "#6b7280",
+        "padding": "0.75rem 1.5rem",
+        "borderRadius": "0.5rem",
+        "fontSize": "1rem",
+        "fontWeight": "500",
+        "hover": {
+          "background": "#f3f4f6",
+          "color": "#374151"
+        }
+      }
+    },
+    "cards": {
+      "nft-card": {
+        "background": "#ffffff",
+        "borderRadius": "1rem",
+        "boxShadow": "0 4px 6px rgba(0, 0, 0, 0.1)",
+        "overflow": "hidden",
+        "transition": "all 0.3s ease",
+        "hover": {
+          "transform": "translateY(-4px)",
+          "boxShadow": "0 8px 25px rgba(0, 0, 0, 0.15)"
+        }
+      },
+      "collection-card": {
+        "background": "#ffffff",
+        "borderRadius": "1.5rem",
+        "boxShadow": "0 4px 6px rgba(0, 0, 0, 0.1)",
+        "padding": "1.5rem",
+        "transition": "all 0.3s ease",
+        "hover": {
+          "transform": "translateY(-2px)",
+          "boxShadow": "0 8px 25px rgba(0, 0, 0, 0.15)"
+        }
+      },
+      "feature-card": {
+        "background": "#f9fafb",
+        "borderRadius": "1rem",
+        "padding": "1.5rem",
+        "transition": "all 0.3s ease",
+        "hover": {
+          "background": "#f3f4f6"
+        }
+      }
+    },
+    "navigation": {
+      "header": {
+        "height": "4rem",
+        "background": "#ffffff",
+        "borderBottom": "1px solid #e5e7eb",
+        "boxShadow": "0 1px 3px rgba(0, 0, 0, 0.1)"
+      },
+      "nav-item": {
+        "padding": "0.5rem 0.75rem",
+        "borderRadius": "0.5rem",
+        "fontSize": "0.875rem",
+        "fontWeight": "500",
+        "transition": "all 0.2s ease",
+        "active": {
+          "background": "rgba(225, 29, 42, 0.1)",
+          "color": "#e11d2a"
+        },
+        "hover": {
+          "background": "#f3f4f6",
+          "color": "#374151"
+        }
+      }
+    },
+    "forms": {
+      "input": {
+        "background": "#ffffff",
+        "border": "1px solid #d1d5db",
+        "borderRadius": "0.5rem",
+        "padding": "0.75rem 1rem",
+        "fontSize": "1rem",
+        "focus": {
+          "border": "#e11d2a",
+          "boxShadow": "0 0 0 3px rgba(225, 29, 42, 0.1)"
+        }
+      },
+      "textarea": {
+        "background": "#ffffff",
+        "border": "1px solid #d1d5db",
+        "borderRadius": "0.5rem",
+        "padding": "0.75rem 1rem",
+        "fontSize": "1rem",
+        "minHeight": "6rem",
+        "resize": "vertical",
+        "focus": {
+          "border": "#e11d2a",
+          "boxShadow": "0 0 0 3px rgba(225, 29, 42, 0.1)"
+        }
+      },
+      "select": {
+        "background": "#ffffff",
+        "border": "1px solid #d1d5db",
+        "borderRadius": "0.5rem",
+        "padding": "0.75rem 1rem",
+        "fontSize": "1rem",
+        "focus": {
+          "border": "#e11d2a",
+          "boxShadow": "0 0 0 3px rgba(225, 29, 42, 0.1)"
+        }
+      }
+    },
+    "wallet": {
+      "connect-button": {
+        "background": "#e11d2a",
+        "color": "#ffffff",
+        "padding": "0.75rem 1.5rem",
+        "borderRadius": "0.5rem",
+        "fontSize": "1rem",
+        "fontWeight": "600",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "0.5rem",
+        "hover": {
+          "background": "#c41625",
+          "boxShadow": "0 4px 12px rgba(225, 29, 42, 0.4)"
+        }
+      },
+      "connected-state": {
+        "background": "#ffffff",
+        "border": "1px solid #d1d5db",
+        "borderRadius": "0.5rem",
+        "padding": "0.5rem 1rem",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "0.5rem",
+        "fontSize": "0.875rem"
+      }
+    }
+  },
+  "layouts": {
+    "splash-page": {
+      "hero": {
+        "padding": "6rem 1rem",
+        "textAlign": "center",
+        "background": "linear-gradient(135deg, #e11d2a 0%, #ff4444 100%)",
+        "color": "#ffffff"
+      },
+      "features": {
+        "padding": "6rem 1rem",
+        "background": "#ffffff",
+        "grid": "repeat(auto-fit, minmax(300px, 1fr))",
+        "gap": "2rem"
+      },
+      "stats": {
+        "padding": "4rem 1rem",
+        "background": "#f9fafb",
+        "grid": "repeat(auto-fit, minmax(200px, 1fr))",
+        "gap": "2rem",
+        "textAlign": "center"
+      }
+    },
+    "marketplace": {
+      "header": {
+        "height": "4rem",
+        "padding": "0 1rem",
+        "background": "#ffffff",
+        "borderBottom": "1px solid #e5e7eb"
+      },
+      "sidebar": {
+        "width": "16rem",
+        "background": "#f9fafb",
+        "padding": "1rem",
+        "borderRight": "1px solid #e5e7eb"
+      },
+      "main": {
+        "flex": "1",
+        "padding": "2rem",
+        "background": "#ffffff"
+      }
+    }
+  },
+  "icons": {
+    "sizes": {
+      "xs": "1rem",
+      "sm": "1.25rem",
+      "md": "1.5rem",
+      "lg": "2rem",
+      "xl": "2.5rem"
+    },
+    "library": "heroicons"
+  },
+  "animations": {
+    "transitions": {
+      "fast": "0.15s ease-out",
+      "normal": "0.3s ease-out",
+      "slow": "0.5s ease-out"
+    },
+    "hover-effects": {
+      "lift": "translateY(-2px)",
+      "scale": "scale(1.05)",
+      "glow": "0 0 20px rgba(225, 29, 42, 0.5)"
+    }
+  },
+  "breakpoints": {
+    "mobile": "640px",
+    "tablet": "768px",
+    "desktop": "1024px",
+    "wide": "1280px"
+  },
+  "pages": {
+    "splash": {
+      "route": "/",
+      "title": "Seismic Epicenter - Premier NFT Marketplace",
+      "sections": ["hero", "features", "stats", "cta"]
+    },
+    "home": {
+      "route": "/home",
+      "title": "Home - Seismic Epicenter",
+      "sections": ["hero", "trending", "activity", "stats"]
+    },
+    "collections": {
+      "route": "/collections",
+      "title": "Collections - Seismic Epicenter",
+      "sections": ["header", "filters", "grid", "pagination"]
+    },
+    "create": {
+      "route": "/create",
+      "title": "Create NFT - Seismic Epicenter",
+      "sections": ["header", "form", "preview", "submit"]
+    },
+    "auctions": {
+      "route": "/auctions",
+      "title": "Auctions - Seismic Epicenter",
+      "sections": ["header", "filters", "grid", "pagination"]
+    },
+    "profile": {
+      "route": "/profile",
+      "title": "Profile - Seismic Epicenter",
+      "sections": ["header", "stats", "nfts", "activity"]
+    }
+  },
+  "features": {
+    "wallet-integration": {
+      "primary": "SeismicWallet",
+      "fallback": "MetaMask",
+      "secondary": "Solana",
+      "network": "SEI"
+    },
+    "nft-features": [
+      "Lazy Minting",
+      "EIP-2981 Royalties",
+      "Cross-chain Support",
+      "Auction System",
+      "Collection Management"
+    ],
+    "marketplace-features": [
+      "Buy/Sell NFTs",
+      "Create Collections",
+      "Auction Bidding",
+      "Profile Management",
+      "Activity Tracking"
+    ]
+  },
+  "content": {
+    "taglines": [
+      "The premier cross-chain NFT marketplace built for the SEI ecosystem",
+      "Trade NFTs with confidence using SeismicWallet",
+      "Experience the future of NFT trading"
+    ],
+    "features": [
+      {
+        "title": "Lightning Fast",
+        "description": "Built on SEI for instant transactions and minimal gas fees"
+      },
+      {
+        "title": "Secure Trading",
+        "description": "Advanced security with SeismicWallet integration and smart contracts"
+      },
+      {
+        "title": "Cross-Chain",
+        "description": "Support for multiple blockchains with seamless asset bridging"
+      },
+      {
+        "title": "Community Driven",
+        "description": "Built by creators, for creators with community governance"
+      }
+    ]
+  },
+  "assets": {
+    "logos": {
+      "seismic-wallet": "/assets/Seismic LOGO 2 48x48 px.png"
+    },
+    "placeholders": {
+      "nft": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop",
+      "collection": "https://images.unsplash.com/photo-1634973357973-f2ed2657db3c?w=400&h=400&fit=crop",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"
+    }
+  },
+  "metadata": {
+    "created": "2024-01-01",
+    "updated": "2024-01-01",
+    "version": "1.0.0",
+    "author": "Seismic Epicenter Team",
+    "license": "MIT",
+    "repository": "https://github.com/KREaTOR-Finance/EpicenterMarketplace"
+  }
+} 

@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from './lib/apollo';
-import { WalletProvider } from './components/WalletProvider';
+import { MockWalletProvider } from './components/MockWalletProvider';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Layout } from './components/Layout';
 import { ThemeToggle } from './components/ThemeToggle';
 import { useTheme } from './contexts/ThemeContext';
 import { HomePage } from './pages/HomePage';
+import { SplashPage } from './pages/SplashPage';
 import { ProDashboard } from './pages/ProDashboard';
 import './index.css';
 
@@ -830,12 +831,13 @@ const ProfilePage = () => {
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
-      <WalletProvider>
+      <MockWalletProvider>
         <ThemeProvider>
           <Router>
             <Layout>
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<SplashPage />} />
+                <Route path="/home" element={<HomePage />} />
                 <Route path="/collections" element={<CollectionsPage />} />
                 <Route path="/create" element={<CreatePage />} />
                 <Route path="/auctions" element={<AuctionsPage />} />
@@ -845,7 +847,7 @@ function App() {
             </Layout>
           </Router>
         </ThemeProvider>
-      </WalletProvider>
+      </MockWalletProvider>
     </ApolloProvider>
   );
 }

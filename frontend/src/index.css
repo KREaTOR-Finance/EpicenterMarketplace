@@ -1,8 +1,7 @@
+@import './styles/dark-theme.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/dark-theme.css';
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

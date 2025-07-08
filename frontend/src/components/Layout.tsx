@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { WalletConnect } from './WalletProvider';
+import { MockWalletConnect } from './MockWalletProvider';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
   HomeIcon, 
@@ -20,11 +20,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isDark } = useTheme();
 
   const navigation = [
-    { name: 'Home', href: '/', icon: HomeIcon },
+    { name: 'Home', href: '/home', icon: HomeIcon },
     { name: 'Collections', href: '/collections', icon: CollectionIcon },
     { name: 'Create', href: '/create', icon: PlusIcon },
-    { name: 'Auctions', href: '/auctions', icon: FireIcon, secondary: true },
-    { name: 'Pro Dashboard', href: '/pro', icon: CurrencyDollarIcon, pro: true },
+    { name: 'Auctions', href: '/auctions', icon: FireIcon },
     { name: 'Profile', href: '/profile', icon: UserIcon },
   ];
 
@@ -42,7 +41,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/EpicenterMarketplace/assets/Seismic LOGO 2 48x48 px.png" 
+                src="/assets/Seismic LOGO 2 48x48 px.png" 
                 alt="SeismicWallet Logo" 
                 className="w-8 h-8"
               />
@@ -61,20 +60,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     isActive(item.href)
                       ? isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-700'
                       : isDark ? 'text-gray-300 hover:text-white hover:bg-[#181818]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                  } ${item.secondary ? 'opacity-75' : ''} ${item.pro ? isDark ? 'bg-[#e11d2a]/10 text-[#e11d2a]' : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700' : ''}`}
+                  }`}
                 >
                   <item.icon className="w-4 h-4" />
                   <span>{item.name}</span>
-                  {item.secondary && (
-                    <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#181818] text-gray-300' : 'bg-gray-200 text-gray-600'}`}>
-                      SEI
-                    </span>
-                  )}
-                  {item.pro && (
-                    <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-200 text-red-700'}`}>
-                      PRO
-                    </span>
-                  )}
                 </Link>
               ))}
             </nav>
@@ -88,7 +77,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
 
               {/* Wallet Connect */}
-              <WalletConnect />
+              <MockWalletConnect />
             </div>
           </div>
         </div>
@@ -99,7 +88,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Mobile Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/EpicenterMarketplace/assets/Seismic LOGO 2 48x48 px.png" 
+                src="/assets/Seismic LOGO 2 48x48 px.png" 
                 alt="SeismicWallet Logo" 
                 className="w-6 h-6"
               />
@@ -118,20 +107,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     isActive(item.href)
                       ? isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-700'
                       : isDark ? 'text-gray-300 hover:text-white hover:bg-[#181818]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                  } ${item.secondary ? 'opacity-75' : ''} ${item.pro ? isDark ? 'bg-[#e11d2a]/10 text-[#e11d2a]' : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700' : ''}`}
+                  }`}
                 >
                   <item.icon className="w-5 h-5" />
                   <span>{item.name}</span>
-                  {item.secondary && (
-                    <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#181818] text-gray-300' : 'bg-gray-200 text-gray-600'}`}>
-                      SEI
-                    </span>
-                  )}
-                                  {item.pro && (
-                    <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-200 text-red-700'}`}>
-                      PRO
-                    </span>
-                  )}
                 </Link>
               ))}
             </div>
@@ -152,7 +131,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <img 
-                  src="/EpicenterMarketplace/assets/Seismic LOGO 2 48x48 px.png" 
+                  src="/assets/Seismic LOGO 2 48x48 px.png" 
                   alt="SeismicWallet Logo" 
                   className="w-8 h-8"
                 />

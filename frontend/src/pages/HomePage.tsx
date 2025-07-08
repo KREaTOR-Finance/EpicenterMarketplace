@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useWallet } from '../components/WalletProvider';
+import { useMockWallet } from '../components/MockWalletProvider';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
   FireIcon, 
@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/outline';
 
 export const HomePage: React.FC = () => {
-  const { activeWallet, seismicWallet, metaMask } = useWallet();
+  const { walletState, connectWallet, disconnectWallet } = useMockWallet();
   const { isDark } = useTheme();
 
   const features = [
@@ -149,32 +149,20 @@ export const HomePage: React.FC = () => {
             The premier NFT marketplace for the SEI ecosystem
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {!activeWallet ? (
-              <>
-                <button 
-                  onClick={() => seismicWallet.connect()}
-                  className={`px-8 py-4 font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2 ${
-                    isDark 
-                      ? 'bg-white text-[#e11d2a] hover:bg-gray-100' 
-                      : 'bg-white text-[#e11d2a] hover:bg-red-50'
-                  }`}
-                >
-                  <span>Connect SeismicWallet</span>
-                  <span className={`text-xs px-2 py-1 rounded ${
-                    isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-800'
-                  }`}>Primary</span>
-                </button>
-                <button 
-                  onClick={() => metaMask.connect()}
-                  className={`px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg transition-colors ${
-                    isDark 
-                      ? 'hover:bg-white hover:text-[#e11d2a]' 
-                      : 'hover:bg-white hover:text-[#e11d2a]'
-                  }`}
-                >
-                  Connect MetaMask
-                </button>
-              </>
+            {!walletState.isConnected ? (
+              <button 
+                onClick={connectWallet}
+                className={`px-8 py-4 font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2 ${
+                  isDark 
+                    ? 'bg-white text-[#e11d2a] hover:bg-gray-100' 
+                    : 'bg-white text-[#e11d2a] hover:bg-red-50'
+                }`}
+              >
+                <span>Connect SeismicWallet</span>
+                <span className={`text-xs px-2 py-1 rounded ${
+                  isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-800'
+                }`}>Primary</span>
+              </button>
             ) : (
             <Link
               to="/collections"
@@ -190,14 +178,13 @@ export const HomePage: React.FC = () => {
           </div>
           
           {/* Wallet Status */}
-          {activeWallet && (
+          {walletState.isConnected && (
             <div className="mt-8 p-4 bg-white/10 rounded-lg">
               <p className="text-sm">
-                Connected with {activeWallet === 'seismic' ? 'SeismicWallet' : activeWallet === 'metamask' ? 'MetaMask' : 'Solana'}
+                Connected with SeismicWallet
               </p>
               <p className={`text-xs ${isDark ? 'text-gray-200' : 'text-red-200'}`}>
-                {activeWallet === 'seismic' ? seismicWallet.address : 
-                 activeWallet === 'metamask' ? metaMask.address : 'Connected'}
+                {walletState.address}
               </p>
             </div>
           )}
