@@ -21,7 +21,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isDark } = useTheme();
 
   const navigation = [
-    { name: 'Home', href: '/home', icon: HomeIcon },
     { name: 'Collections', href: '/collections', icon: CollectionIcon },
     { name: 'Create', href: '/create', icon: PlusIcon },
     { name: 'Auctions', href: '/auctions', icon: FireIcon },
@@ -40,19 +39,22 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
               <img 
                 src={getAssetPath('Seismic LOGO 2 48x48 px.png')}
                 alt="SeismicWallet Logo" 
                 className="w-8 h-8"
               />
-              <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <span className={`text-lg sm:text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} hidden xs:block`}>
                 Seismic Epicenter
+              </span>
+              <span className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'} xs:hidden`}>
+                SE
               </span>
             </Link>
 
-            {/* Primary Navigation */}
-            <nav className="hidden md:flex space-x-8">
+            {/* Primary Navigation - Desktop */}
+            <nav className="hidden lg:flex space-x-6">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
@@ -69,49 +71,56 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               ))}
             </nav>
 
-            {/* Wallet Connection */}
-            <div className="flex items-center space-x-4">
-              {/* SEI Network Indicator */}
-              <div className={`hidden sm:flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-800'}`}>
-                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-[#e11d2a]' : 'bg-[#e11d2a]'}`}></div>
-                <span>SEI Network</span>
-              </div>
-
-              {/* Wallet Connect */}
-              <MockWalletConnect />
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Header */}
-        <div className="sm:hidden">
-          <div className="flex justify-between items-center h-16 px-4">
-            {/* Mobile Logo */}
-            <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src={getAssetPath('Seismic LOGO 2 48x48 px.png')}
-                alt="SeismicWallet Logo" 
-                className="w-6 h-6"
-              />
-              <span className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Seismic Epicenter
-              </span>
-            </Link>
-
-            {/* Mobile Navigation */}
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            {/* Mobile Navigation - Tablet */}
+            <nav className="hidden md:flex lg:hidden space-x-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium ${
+                  className={`flex items-center justify-center p-2 rounded-md transition-colors ${
                     isActive(item.href)
                       ? isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-700'
                       : isDark ? 'text-gray-300 hover:text-white hover:bg-[#181818]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                   }`}
+                  title={item.name}
                 >
                   <item.icon className="w-5 h-5" />
-                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </nav>
+
+            {/* Right Side */}
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* SEI Network Indicator - Hidden on mobile */}
+              <div className={`hidden sm:flex items-center space-x-2 px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-800'}`}>
+                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-[#e11d2a]' : 'bg-[#e11d2a]'}`}></div>
+                <span className="hidden sm:inline">SEI Network</span>
+              </div>
+
+              {/* Wallet Connect */}
+              <div className="flex-shrink-0">
+                <MockWalletConnect />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Navigation - Bottom of screen */}
+        <div className="md:hidden">
+          <div className={`fixed bottom-0 left-0 right-0 ${isDark ? 'bg-[#111] border-t border-[#333]' : 'bg-white border-t border-gray-200'} z-50`}>
+            <div className="flex justify-around items-center py-2">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`flex flex-col items-center space-y-1 px-3 py-2 rounded-md transition-colors ${
+                    isActive(item.href)
+                      ? isDark ? 'text-[#e11d2a]' : 'text-red-700'
+                      : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span className="text-xs font-medium">{item.name}</span>
                 </Link>
               ))}
             </div>
@@ -120,7 +129,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20 md:pb-8">
         {children}
       </main>
 

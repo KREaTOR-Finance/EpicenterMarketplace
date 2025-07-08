@@ -78,9 +78,9 @@ export const MockWalletConnect: React.FC = () => {
 
   if (walletState.isConnected) {
     return (
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
         {/* Connected Status */}
-        <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+        <div className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg w-full sm:w-auto justify-center ${
           isDark ? 'bg-[#181818] border border-[#333]' : 'bg-white border border-gray-300'
         }`}>
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -95,7 +95,7 @@ export const MockWalletConnect: React.FC = () => {
         {/* Disconnect Button */}
         <button
           onClick={disconnectWallet}
-          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+          className={`w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             isDark 
               ? 'bg-[#333] text-white hover:bg-[#444]' 
               : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
@@ -111,7 +111,7 @@ export const MockWalletConnect: React.FC = () => {
     <button
       onClick={connectWallet}
       disabled={isConnecting}
-      className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+      className={`flex items-center justify-center space-x-2 px-4 sm:px-6 py-3 rounded-lg font-medium transition-all w-full sm:w-auto ${
         isConnecting
           ? isDark ? 'bg-[#e11d2a]/50 text-white cursor-not-allowed' : 'bg-red-300 text-white cursor-not-allowed'
           : isDark ? 'bg-[#e11d2a] text-white hover:bg-[#c41625] hover:shadow-lg' : 'bg-[#e11d2a] text-white hover:bg-[#c41625] hover:shadow-lg'
@@ -120,9 +120,9 @@ export const MockWalletConnect: React.FC = () => {
       <img 
         src={getAssetPath('Seismic LOGO 2 32x32 px.png')}
         alt="SeismicWallet" 
-        className="w-5 h-5"
+        className="w-4 h-4 sm:w-5 sm:h-5"
       />
-      <span>
+      <span className="text-sm sm:text-base">
         {isConnecting ? 'Connecting...' : 'Connect SeismicWallet'}
       </span>
       {isConnecting && (
