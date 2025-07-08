@@ -76,7 +76,43 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   // Check if SeismicWallet is available
   const isSeismicWalletAvailable = () => {
-    return typeof window !== 'undefined' && window.seismicWallet;
+    if (typeof window === 'undefined') return false;
+    
+    // Check multiple possible injection points for SeismicWallet
+    return !!(
+      window.seismicWallet || 
+      window.seismic || 
+      window.ethereum?.isSeismicWallet ||
+      window.ethereum?.isSeismic ||
+      // Check if ethereum provider has seismic branding
+      (window.ethereum && (
+        window.ethereum.isSeiWallet ||
+        window.ethereum.isSei ||
+        // Check provider info
+        window.ethereum._metamask?.isSeismicWallet
+      ))
+    );
+  };
+
+  const getSeismicWalletProvider = () => {
+    if (typeof window === 'undefined') return null;
+    
+    // Try different provider locations
+    if (window.seismicWallet) return window.seismicWallet;
+    if (window.seismic) return window.seismic;
+    if (window.ethereum?.isSeismicWallet) return window.ethereum;
+    if (window.ethereum?.isSeismic) return window.ethereum;
+    if (window.ethereum?.isSeiWallet) return window.ethereum;
+    if (window.ethereum?.isSei) return window.ethereum;
+    
+    // If ethereum exists but no specific seismic detection, still try it
+    // This covers cases where the extension modifies the existing ethereum object
+    if (window.ethereum) {
+      console.log('Attempting to use ethereum provider for SeismicWallet');
+      return window.ethereum;
+    }
+    
+    return null;
   };
 
   const isMetaMaskAvailable = () => {
@@ -85,36 +121,71 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   // SeismicWallet functions
   const connectSeismicWallet = async () => {
-    if (!isSeismicWalletAvailable()) {
+    const provider = getSeismicWalletProvider();
+    
+    if (!provider) {
+      console.log('SeismicWallet not detected. Available providers:', {
+        seismicWallet: !!window.seismicWallet,
+        seismic: !!(window as any).seismic,
+        ethereum: !!window.ethereum,
+        ethereumIsSeismic: !!window.ethereum?.isSeismicWallet
+      });
+      
       // Fallback to MetaMask if SeismicWallet is not available
       if (isMetaMaskAvailable()) {
+        console.log('Falling back to MetaMask');
         await connectMetaMask();
         setActiveWallet('metamask');
         return;
       }
-      throw new Error('SeismicWallet not installed. Please install SeismicWallet extension.');
+      throw new Error('SeismicWallet not installed. Please install SeismicWallet extension or ensure it is properly loaded.');
     }
 
     try {
-      const accounts = await window.seismicWallet.request({
-        method: 'eth_requestAccounts',
-      });
+      console.log('Attempting to connect to SeismicWallet via provider:', provider);
+      
+      // Try multiple request methods for better compatibility
+      let accounts;
+      try {
+        // Standard method
+        accounts = await provider.request({
+          method: 'eth_requestAccounts',
+        });
+      } catch (requestError) {
+        console.log('Standard request failed, trying enable method:', requestError);
+        // Fallback method (older MetaMask style)
+        accounts = await provider.enable?.();
+      }
 
-      if (accounts.length > 0) {
-        const provider = new ethers.providers.Web3Provider(window.seismicWallet);
+      console.log('SeismicWallet accounts received:', accounts);
+
+      if (accounts && accounts.length > 0) {
+        const ethersProvider = new ethers.providers.Web3Provider(provider);
         setSeismicWallet({
           isConnected: true,
           address: accounts[0],
-          provider,
+          provider: ethersProvider,
         });
         setActiveWallet('seismic');
+        console.log('SeismicWallet connected successfully:', accounts[0]);
+      } else {
+        throw new Error('No accounts returned from SeismicWallet');
       }
     } catch (error) {
       console.error('Failed to connect SeismicWallet:', error);
-      // Fallback to MetaMask
-      if (isMetaMaskAvailable()) {
-        await connectMetaMask();
-        setActiveWallet('metamask');
+      
+      // If SeismicWallet connection fails, try MetaMask as fallback
+      if (isMetaMaskAvailable() && provider !== window.ethereum) {
+        console.log('SeismicWallet failed, falling back to MetaMask');
+        try {
+          await connectMetaMask();
+          setActiveWallet('metamask');
+        } catch (fallbackError) {
+          console.error('MetaMask fallback also failed:', fallbackError);
+          throw new Error('Both SeismicWallet and MetaMask connection failed');
+        }
+      } else {
+        throw error;
       }
     }
   };
@@ -254,19 +325,22 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   useEffect(() => {
     const autoConnect = async () => {
       // Try SeismicWallet first
-      if (isSeismicWalletAvailable()) {
+      const seismicProvider = getSeismicWalletProvider();
+      if (seismicProvider) {
         try {
-          const accounts = await window.seismicWallet.request({
+          console.log('Auto-connecting to SeismicWallet...');
+          const accounts = await seismicProvider.request({
             method: 'eth_accounts',
           });
-          if (accounts.length > 0) {
-            const provider = new ethers.providers.Web3Provider(window.seismicWallet);
+          if (accounts && accounts.length > 0) {
+            const ethersProvider = new ethers.providers.Web3Provider(seismicProvider);
             setSeismicWallet({
               isConnected: true,
               address: accounts[0],
-              provider,
+              provider: ethersProvider,
             });
             setActiveWallet('seismic');
+            console.log('SeismicWallet auto-connected:', accounts[0]);
             return;
           }
         } catch (error) {
@@ -277,6 +351,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       // Fallback to MetaMask
       if (isMetaMaskAvailable()) {
         try {
+          console.log('Auto-connecting to MetaMask...');
           const accounts = await window.ethereum.request({
             method: 'eth_accounts',
           });
@@ -290,6 +365,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             if (!seismicWallet.isConnected) {
               setActiveWallet('metamask');
             }
+            console.log('MetaMask auto-connected:', accounts[0]);
           }
         } catch (error) {
           console.log('MetaMask auto-connect failed:', error);
@@ -302,15 +378,19 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     // Listen for account changes
     if (typeof window !== 'undefined') {
       const handleAccountsChanged = (accounts: string[]) => {
+        console.log('Accounts changed:', accounts);
         if (accounts.length === 0) {
           disconnectSeismicWallet();
           disconnectMetaMask();
         } else {
-          if (activeWallet === 'seismic' && window.seismicWallet) {
-            setSeismicWallet(prev => ({
-              ...prev,
-              address: accounts[0],
-            }));
+          if (activeWallet === 'seismic') {
+            const seismicProvider = getSeismicWalletProvider();
+            if (seismicProvider) {
+              setSeismicWallet(prev => ({
+                ...prev,
+                address: accounts[0],
+              }));
+            }
           } else if (activeWallet === 'metamask' && window.ethereum) {
             setMetaMask(prev => ({
               ...prev,
@@ -320,18 +400,20 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         }
       };
 
-      if (window.seismicWallet) {
-        window.seismicWallet.on('accountsChanged', handleAccountsChanged);
+      // Listen to both possible providers
+      const seismicProvider = getSeismicWalletProvider();
+      if (seismicProvider && seismicProvider.on) {
+        seismicProvider.on('accountsChanged', handleAccountsChanged);
       }
-      if (window.ethereum) {
+      if (window.ethereum && window.ethereum.on) {
         window.ethereum.on('accountsChanged', handleAccountsChanged);
       }
 
       return () => {
-        if (window.seismicWallet) {
-          window.seismicWallet.removeListener('accountsChanged', handleAccountsChanged);
+        if (seismicProvider && seismicProvider.removeListener) {
+          seismicProvider.removeListener('accountsChanged', handleAccountsChanged);
         }
-        if (window.ethereum) {
+        if (window.ethereum && window.ethereum.removeListener) {
           window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
         }
       };
@@ -380,11 +462,29 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 export const WalletConnect: React.FC = () => {
   const { seismicWallet, metaMask, solana, activeWallet } = useWallet();
 
+  // Debug function to log wallet detection info
+  const debugWalletDetection = () => {
+    console.log('=== Wallet Detection Debug ===');
+    console.log('window.seismicWallet:', !!window.seismicWallet);
+    console.log('window.seismic:', !!(window as any).seismic);
+    console.log('window.ethereum:', !!window.ethereum);
+    console.log('window.ethereum?.isSeismicWallet:', !!window.ethereum?.isSeismicWallet);
+    console.log('window.ethereum?.isSeismic:', !!window.ethereum?.isSeismic);
+    console.log('window.ethereum?.isSeiWallet:', !!window.ethereum?.isSeiWallet);
+    console.log('window.ethereum?.isSei:', !!window.ethereum?.isSei);
+    console.log('Available providers:', Object.keys(window).filter(key => 
+      key.includes('ethereum') || key.includes('seismic') || key.includes('sei')
+    ));
+    console.log('==============================');
+  };
+
   const handleConnectSeismic = async () => {
     try {
+      debugWalletDetection();
       await seismicWallet.connect();
     } catch (error) {
       console.error('Failed to connect SeismicWallet:', error);
+      alert(`Failed to connect SeismicWallet: ${error instanceof Error ? error.message : String(error)}\n\nPlease check the console for debugging information.`);
     }
   };
 
@@ -393,6 +493,7 @@ export const WalletConnect: React.FC = () => {
       await metaMask.connect();
     } catch (error) {
       console.error('Failed to connect MetaMask:', error);
+      alert(`Failed to connect MetaMask: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 
@@ -401,6 +502,7 @@ export const WalletConnect: React.FC = () => {
       await solana.connect();
     } catch (error) {
       console.error('Failed to connect Solana wallet:', error);
+      alert(`Failed to connect Solana wallet: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 
@@ -451,6 +553,15 @@ export const WalletConnect: React.FC = () => {
         <span className="text-xs px-2 py-1 rounded bg-[#c11825]">Primary</span>
       </button>
 
+      {/* Debug Button - Remove this in production */}
+      <button
+        onClick={debugWalletDetection}
+        className="px-2 py-1 text-xs rounded transition-colors bg-gray-500 text-white hover:bg-gray-600"
+        title="Debug wallet detection (Check console)"
+      >
+        Debug
+      </button>
+
       {/* Secondary Options - Small Icons */}
       <div className="flex items-center space-x-2">
         {/* MetaMask Icon */}
@@ -479,7 +590,18 @@ export const WalletConnect: React.FC = () => {
 declare global {
   interface Window {
     seismicWallet?: any;
-    ethereum?: any;
+    seismic?: any;
+    ethereum?: any & {
+      isSeismicWallet?: boolean;
+      isSeismic?: boolean;
+      isSeiWallet?: boolean;
+      isSei?: boolean;
+      _metamask?: {
+        isSeismicWallet?: boolean;
+      };
+      enable?: () => Promise<string[]>;
+      request?: (args: { method: string; params?: any[] }) => Promise<any>;
+    };
     solana?: any;
   }
 } 

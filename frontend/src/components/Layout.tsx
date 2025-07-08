@@ -40,14 +40,16 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDark ? 'bg-[#e11d2a]' : 'bg-[#e11d2a]'}`}>
-                  <span className="text-white font-bold text-sm">SE</span>
-                </div>
-                <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Seismic Epicenter</span>
-              </Link>
-            </div>
+            <Link to="/" className="flex items-center space-x-2">
+              <img 
+                src="/EpicenterMarketplace/assets/Seismic LOGO 2 48x48 px.png" 
+                alt="SeismicWallet Logo" 
+                className="w-8 h-8"
+              />
+              <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                Seismic Epicenter
+              </span>
+            </Link>
 
             {/* Primary Navigation */}
             <nav className="hidden md:flex space-x-8">
@@ -91,33 +93,48 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium ${
-                  isActive(item.href)
-                    ? isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-700'
-                    : isDark ? 'text-gray-300 hover:text-white hover:bg-[#181818]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                } ${item.secondary ? 'opacity-75' : ''} ${item.pro ? isDark ? 'bg-[#e11d2a]/10 text-[#e11d2a]' : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700' : ''}`}
-              >
-                <item.icon className="w-5 h-5" />
-                <span>{item.name}</span>
-                {item.secondary && (
-                  <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#181818] text-gray-300' : 'bg-gray-200 text-gray-600'}`}>
-                    SEI
-                  </span>
-                )}
+        {/* Mobile Header */}
+        <div className="sm:hidden">
+          <div className="flex justify-between items-center h-16 px-4">
+            {/* Mobile Logo */}
+            <Link to="/" className="flex items-center space-x-2">
+              <img 
+                src="/EpicenterMarketplace/assets/Seismic LOGO 2 48x48 px.png" 
+                alt="SeismicWallet Logo" 
+                className="w-6 h-6"
+              />
+              <span className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                Seismic Epicenter
+              </span>
+            </Link>
+
+            {/* Mobile Navigation */}
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium ${
+                    isActive(item.href)
+                      ? isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-100 text-red-700'
+                      : isDark ? 'text-gray-300 hover:text-white hover:bg-[#181818]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  } ${item.secondary ? 'opacity-75' : ''} ${item.pro ? isDark ? 'bg-[#e11d2a]/10 text-[#e11d2a]' : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700' : ''}`}
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span>{item.name}</span>
+                  {item.secondary && (
+                    <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#181818] text-gray-300' : 'bg-gray-200 text-gray-600'}`}>
+                      SEI
+                    </span>
+                  )}
                                   {item.pro && (
                     <span className={`text-xs px-1 py-0.5 rounded ${isDark ? 'bg-[#e11d2a]/20 text-[#e11d2a]' : 'bg-red-200 text-red-700'}`}>
                       PRO
                     </span>
                   )}
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </header>
@@ -134,9 +151,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Brand */}
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDark ? 'bg-[#e11d2a]' : 'bg-[#e11d2a]'}`}>
-                  <span className="text-white font-bold text-sm">SE</span>
-                </div>
+                <img 
+                  src="/EpicenterMarketplace/assets/Seismic LOGO 2 48x48 px.png" 
+                  alt="SeismicWallet Logo" 
+                  className="w-8 h-8"
+                />
                 <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Seismic Epicenter</span>
               </div>
               <p className={`max-w-md ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
