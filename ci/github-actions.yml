@@ -1,0 +1,475 @@
+name: Epicenter CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18'
+  RUST_VERSION: '1.70'
+
+jobs:
+  # Smart Contract Testing & Deployment
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: contracts/package-lock.json
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install Solidity dependencies
+        working-directory: ./contracts
+        run: npm ci
+
+      - name: Install Anchor CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.solana.com/v1.16.0/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+      - name: Install Anchor
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          avm install latest
+          avm use latest
+
+      - name: Compile Solidity contracts
+        working-directory: ./contracts
+        run: npx hardhat compile
+
+      - name: Run Solidity tests
+        working-directory: ./contracts
+        run: npx hardhat test
+
+      - name: Run Solidity coverage
+        working-directory: ./contracts
+        run: npx hardhat coverage
+
+      - name: Build Anchor programs
+        working-directory: ./anchor-auction
+        run: anchor build
+
+      - name: Run Anchor tests
+        working-directory: ./anchor-auction
+        run: anchor test
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./contracts/coverage/lcov.info
+          flags: contracts
+          name: contracts-coverage
+
+  # Backend Testing & Build
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: epicenter_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Setup environment
+        working-directory: ./backend
+        run: |
+          cp .env.example .env
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/epicenter_test" >> .env
+          echo "REDIS_URL=redis://localhost:6379" >> .env
+          echo "NODE_ENV=test" >> .env
+
+      - name: Run database migrations
+        working-directory: ./backend
+        run: npx prisma migrate deploy
+
+      - name: Run linting
+        working-directory: ./backend
+        run: npm run lint
+
+      - name: Run type checking
+        working-directory: ./backend
+        run: npm run type-check
+
+      - name: Run tests
+        working-directory: ./backend
+        run: npm test
+
+      - name: Run test coverage
+        working-directory: ./backend
+        run: npm run test:coverage
+
+      - name: Build backend
+        working-directory: ./backend
+        run: npm run build
+
+      - name: Upload backend coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./backend/coverage/lcov.info
+          flags: backend
+          name: backend-coverage
+
+  # Frontend Testing & Build
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run linting
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Run type checking
+        working-directory: ./frontend
+        run: npm run type-check
+
+      - name: Run tests
+        working-directory: ./frontend
+        run: npm test
+
+      - name: Run test coverage
+        working-directory: ./frontend
+        run: npm run test:coverage
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Upload frontend coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./frontend/coverage/lcov.info
+          flags: frontend
+          name: frontend-coverage
+
+  # UI Library Testing & Build
+  ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./ui
+        run: npm ci
+
+      - name: Run linting
+        working-directory: ./ui
+        run: npm run lint
+
+      - name: Run type checking
+        working-directory: ./ui
+        run: npm run type-check
+
+      - name: Run tests
+        working-directory: ./ui
+        run: npm test
+
+      - name: Build UI library
+        working-directory: ./ui
+        run: npm run build
+
+      - name: Build Storybook
+        working-directory: ./ui
+        run: npm run build-storybook
+
+  # Security Scanning
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run security audit
+        run: |
+          cd contracts && npm audit --audit-level moderate
+          cd ../backend && npm audit --audit-level moderate
+          cd ../frontend && npm audit --audit-level moderate
+          cd ../ui && npm audit --audit-level moderate
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+  # Integration Tests
+  integration:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: epicenter_integration
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          cd backend && npm ci
+          cd ../frontend && npm ci
+
+      - name: Setup integration environment
+        run: |
+          cd backend
+          cp .env.example .env
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/epicenter_integration" >> .env
+          echo "REDIS_URL=redis://localhost:6379" >> .env
+          echo "NODE_ENV=test" >> .env
+
+      - name: Run database migrations
+        working-directory: ./backend
+        run: npx prisma migrate deploy
+
+      - name: Start backend server
+        working-directory: ./backend
+        run: npm run build && npm start &
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/epicenter_integration
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+
+      - name: Wait for backend
+        run: |
+          timeout 30 bash -c 'until curl -f http://localhost:4000/health; do sleep 1; done'
+
+      - name: Run integration tests
+        working-directory: ./backend
+        run: npm run test:integration
+
+  # Performance Testing
+  performance:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          cd backend && npm ci
+          cd ../frontend && npm ci
+
+      - name: Build applications
+        run: |
+          cd backend && npm run build
+          cd ../frontend && npm run build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: './.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  # Deployment to Staging
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: [contracts, backend, frontend, ui, security, integration]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd contracts && npm ci
+          cd ../backend && npm ci
+          cd ../frontend && npm ci
+          cd ../ui && npm ci
+
+      - name: Build applications
+        run: |
+          cd contracts && npm run build
+          cd ../backend && npm run build
+          cd ../frontend && npm run build
+          cd ../ui && npm run build
+
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add deployment commands here
+
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests on staging..."
+          # Add smoke test commands here
+
+  # Deployment to Production
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: [contracts, backend, frontend, ui, security, integration]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd contracts && npm ci
+          cd ../backend && npm ci
+          cd ../frontend && npm ci
+          cd ../ui && npm ci
+
+      - name: Build applications
+        run: |
+          cd contracts && npm run build
+          cd ../backend && npm run build
+          cd ../frontend && npm run build
+          cd ../ui && npm run build
+
+      - name: Deploy smart contracts
+        working-directory: ./contracts
+        run: |
+          echo "Deploying smart contracts to production..."
+          # Add contract deployment commands here
+
+      - name: Deploy backend
+        working-directory: ./backend
+        run: |
+          echo "Deploying backend to production..."
+          # Add backend deployment commands here
+
+      - name: Deploy frontend
+        working-directory: ./frontend
+        run: |
+          echo "Deploying frontend to production..."
+          # Add frontend deployment commands here
+
+      - name: Run production tests
+        run: |
+          echo "Running production tests..."
+          # Add production test commands here
+
+  # Notifications
+  notify:
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always()
+    steps:
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "Deployment successful!"
+          # Add success notification logic here
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Deployment failed!"
+          # Add failure notification logic here 

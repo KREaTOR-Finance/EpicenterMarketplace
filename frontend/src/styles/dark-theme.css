@@ -1,0 +1,184 @@
+/* Dark Theme Custom Styles - SEI.io Inspired */
+
+/* Box Shadow Glow Effects */
+.dark .shadow-sei-glow {
+  box-shadow: 0 2px 16px 0 #e11d2a44, 0 2px 12px 0 #000a;
+}
+
+.dark .shadow-nav-active {
+  box-shadow: 0 0 16px 4px #e11d2a88, 0 2px 12px #fff2;
+}
+
+/* Gradient Backgrounds */
+.dark .bg-sei-header {
+  background: linear-gradient(90deg, #111 80%, #181818 100%);
+}
+
+.dark .bg-sei-underline {
+  background: linear-gradient(90deg, #fff 0%, #e11d2a 100%);
+}
+
+/* Animation Classes */
+.dark .animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #e11d2a, 0 0 10px #e11d2a, 0 0 15px #e11d2a;
+  }
+  to {
+    box-shadow: 0 0 10px #e11d2a, 0 0 20px #e11d2a, 0 0 30px #e11d2a;
+  }
+}
+
+/* Hover Effects */
+.dark .hover-sei-glow:hover {
+  box-shadow: 0 4px 20px 0 #e11d2a66, 0 4px 16px 0 #000c;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Navigation Active States */
+.dark .nav-active {
+  position: relative;
+}
+
+.dark .nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #fff 0%, #e11d2a 100%);
+  border-radius: 1px;
+}
+
+/* Card Styles */
+.dark .card-dark {
+  background: #181818;
+  border: 1px solid #333;
+  box-shadow: 0 2px 16px 0 #e11d2a44, 0 2px 12px 0 #000a;
+}
+
+.dark .card-dark:hover {
+  box-shadow: 0 4px 20px 0 #e11d2a66, 0 4px 16px 0 #000c;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Button Styles */
+.dark .btn-sei-primary {
+  background: #e11d2a;
+  border: 1px solid #e11d2a;
+  color: white;
+  box-shadow: 0 2px 8px 0 #e11d2a44;
+}
+
+.dark .btn-sei-primary:hover {
+  background: #c11825;
+  box-shadow: 0 4px 12px 0 #e11d2a66;
+}
+
+.dark .btn-sei-secondary {
+  background: #181818;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+.dark .btn-sei-secondary:hover {
+  background: #222;
+  border-color: #e11d2a;
+}
+
+/* Input Styles */
+.dark .input-dark {
+  background: #181818;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+.dark .input-dark:focus {
+  border-color: #e11d2a;
+  box-shadow: 0 0 0 3px #e11d2a22;
+}
+
+.dark .input-dark::placeholder {
+  color: #666;
+}
+
+/* Scrollbar Styles */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #e11d2a;
+}
+
+/* Loading Animations */
+.dark .loading-sei {
+  background: linear-gradient(90deg, #181818 25%, #e11d2a22 50%, #181818 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Status Indicators */
+.dark .status-online {
+  background: #e11d2a;
+  box-shadow: 0 0 10px #e11d2a;
+}
+
+.dark .status-offline {
+  background: #666;
+}
+
+/* Text Gradients */
+.dark .text-sei-gradient {
+  background: linear-gradient(135deg, #e11d2a 0%, #fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Modal Styles */
+.dark .modal-backdrop {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.dark .modal-content {
+  background: #111;
+  border: 1px solid #333;
+  box-shadow: 0 8px 32px 0 #e11d2a44, 0 8px 24px 0 #000a;
+}
+
+/* Tooltip Styles */
+.dark .tooltip-dark {
+  background: #222;
+  border: 1px solid #333;
+  color: #fff;
+  box-shadow: 0 4px 12px 0 #000a;
+}
+
+.dark .tooltip-dark::after {
+  border-top-color: #222;
+} 

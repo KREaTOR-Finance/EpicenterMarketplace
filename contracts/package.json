@@ -1,0 +1,47 @@
+{
+  "name": "seismic-epicenter-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Seismic Epicenter NFT Marketplace",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy-sei.ts --network sei-testnet",
+    "deploy:mainnet": "hardhat run scripts/deploy-sei.ts --network sei-mainnet",
+    "verify": "hardhat run scripts/verify.ts",
+    "coverage": "hardhat coverage",
+    "lint": "solhint 'contracts/**/*.sol'",
+    "lint:fix": "solhint 'contracts/**/*.sol' --fix",
+    "size": "hardhat size-contracts",
+    "gas": "REPORT_GAS=true hardhat test"
+  },
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "sei",
+    "nft",
+    "marketplace",
+    "wyvern"
+  ],
+  "author": "Seismic Epicenter Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@openzeppelin/contracts": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^1.28.0",
+    "@typechain/ethers-v6": "^0.4.0",
+    "@typechain/hardhat": "^9.1.0",
+    "chai": "^4.3.7",
+    "ethers": "^6.8.1",
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5",
+    "solhint": "^4.0.0",
+    "typechain": "^8.3.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0"
+  }
+} 

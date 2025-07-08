@@ -1,0 +1,123 @@
+{
+  "name": "seismic-epicenter",
+  "version": "1.0.0",
+  "description": "Cross-chain NFT marketplace forking OpenSea Wyvern V2 and Magic Eden Auction House",
+  "private": true,
+  "workspaces": [
+    "contracts",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:contracts\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:contracts": "cd contracts && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:contracts && npm run build:backend && npm run build:frontend",
+    "build:contracts": "cd contracts && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "npm run test:contracts && npm run test:backend && npm run test:frontend && npm run test:solana",
+    "test:contracts": "cd contracts && npm test",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test:solana": "cd anchor-auction && anchor test",
+    "test:all": "bash ci/test-all.sh",
+    "lint": "npm run lint:contracts && npm run lint:backend && npm run lint:frontend",
+    "lint:contracts": "cd contracts && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:fix": "npm run lint:fix:contracts && npm run lint:fix:backend && npm run lint:fix:frontend",
+    "lint:fix:contracts": "cd contracts && npm run lint:fix",
+    "lint:fix:backend": "cd backend && npm run lint:fix",
+    "lint:fix:frontend": "cd frontend && npm run lint:fix",
+    "type-check": "npm run type-check:contracts && npm run type-check:backend && npm run type-check:frontend",
+    "type-check:contracts": "cd contracts && npm run type-check",
+    "type-check:backend": "cd backend && npm run type-check",
+    "type-check:frontend": "cd frontend && npm run type-check",
+    "install:all": "npm install && npm run install:contracts && npm run install:backend && npm run install:frontend",
+    "install:contracts": "cd contracts && npm install",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "deploy:testnet": "npm run deploy:contracts:testnet && npm run deploy:backend && npm run deploy:frontend",
+    "deploy:mainnet": "npm run deploy:contracts:mainnet && npm run deploy:backend && npm run deploy:frontend",
+    "deploy:contracts:testnet": "cd contracts && npm run deploy:testnet",
+    "deploy:contracts:mainnet": "cd contracts && npm run deploy:mainnet",
+    "deploy:backend": "cd backend && npm run build && npm start",
+    "deploy:frontend": "cd frontend && npm run build",
+    "clean": "npm run clean:contracts && npm run clean:backend && npm run clean:frontend",
+    "clean:contracts": "cd contracts && rm -rf node_modules dist cache artifacts",
+    "clean:backend": "cd backend && rm -rf node_modules dist",
+    "clean:frontend": "cd frontend && rm -rf node_modules dist",
+    "reset": "npm run clean && npm run install:all",
+    "security": "npm run security:contracts && npm run security:backend && npm run security:frontend",
+    "security:contracts": "cd contracts && npm audit",
+    "security:backend": "cd backend && npm audit",
+    "security:frontend": "cd frontend && npm audit",
+    "coverage": "npm run coverage:contracts && npm run coverage:backend && npm run coverage:frontend",
+    "coverage:contracts": "cd contracts && npm run coverage",
+    "coverage:backend": "cd backend && npm run test:coverage",
+    "coverage:frontend": "cd frontend && npm run test:coverage",
+    "docs": "npm run docs:contracts && npm run docs:backend && npm run docs:frontend",
+    "docs:contracts": "cd contracts && npx hardhat docgen",
+    "docs:backend": "cd backend && npm run docs",
+    "docs:frontend": "cd frontend && npm run docs",
+    "format": "npm run format:contracts && npm run format:backend && npm run format:frontend",
+    "format:contracts": "cd contracts && npx prettier --write .",
+    "format:backend": "cd backend && npx prettier --write .",
+    "format:frontend": "cd frontend && npx prettier --write .",
+    "setup": "npm run setup:env && npm run setup:db && npm run setup:contracts",
+    "setup:env": "cp .env.example .env",
+    "setup:db": "cd backend && npm run db:migrate",
+    "setup:contracts": "cd contracts && npm run compile",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f",
+    "ci": "npm run test:all && npm run security && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seismic-epicenter/nft-marketplace.git"
+  },
+  "keywords": [
+    "nft",
+    "marketplace",
+    "sei",
+    "solana",
+    "blockchain",
+    "defi",
+    "ethereum",
+    "cross-chain"
+  ],
+  "author": "Seismic Epicenter Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seismic-epicenter/nft-marketplace/issues"
+  },
+  "homepage": "https://seismic-epicenter.com",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.sol": [
+      "prettier --write"
+    ]
+  }
+} 
